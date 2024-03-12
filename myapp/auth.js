@@ -3,7 +3,7 @@ require("dotenv").config();
 const  config  =  {
 	client : {
 	  id : process.env.PUBLIC_ID,
-	  secret : process.env.PRIVATE_KEY
+	  secret : process.env.SECRET_KEY
 	} ,
 	auth : {
 	  tokenHost : 'https://api.intra.42.fr'

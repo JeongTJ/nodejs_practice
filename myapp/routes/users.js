@@ -54,36 +54,22 @@ router.post('/test', async function(req, res, next) {
 router.get('/login', async function(req, res, next) {
 	try {
 		const client = new AuthorizationCode(config);
+		console.log(config);
 		const accessToken = await client.getToken({
 			code: req.query.code,
-			redirect_uri: 'http://13.124.198.32:1234/users/login'
+			redirect_uri: "http://localhost:1234/users/login"
 		});
 		const apiUrl = 'http://api.intra.42.fr/v2/me';
 		const response = await axios.get(apiUrl, {
 			headers:{
 				Authorization: `Bearer ${accessToken.token.access_token}`
 			}});
-		const key = process.env.SECRET_KEY + "salt";
-		let token = "";
-		token = jwt.sign(
-			{
-				type: "JWT",
-				nickname: response.data.first_name,
-				profile: response.data.last_name,
-			},
-			key,
-			{
-				expiresIn: "15m", // 15분후 만료
-				issuer: "tajeong",
-			}
-		  );
-		res.send(token);
+		res.send(response.data);
 		return res.status(200).json({
 			code: 200,
 			message: "token is created",
 			token: token,
 		});
-		// res.send(response.data);
 	} catch (error){
 		console.log(error.message);
 	}
